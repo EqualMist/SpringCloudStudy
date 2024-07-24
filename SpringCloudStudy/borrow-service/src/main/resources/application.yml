@@ -1,0 +1,9 @@
+server:
+  port: 8301
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.2.14.249:33406/zdb_cloud?
+    username: root
+    password: root@!^*
