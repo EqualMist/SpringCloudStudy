@@ -19,17 +19,19 @@ public class BorrowServiceImpl implements BorrowService {
     @Resource
     BorrowMapper mapper;
 
+    @Resource
+    RestTemplate restTemplate;
+
     @Override
     public BorrowDetail getUserBorrowDetailByUid(int uid) {
         List<Borrow> borrowList = mapper.getBorrowsByUid(uid);
         //那么问题来了，现在拿到借阅关联信息了，怎么调用其他服务获取信息呢？
         //RestTemplate支持多种方式的远程调用
-        RestTemplate restTemplate = new RestTemplate();
-        User user = restTemplate.getForObject("http://localhost:8101/user/" + uid, User.class);
+        User user = restTemplate.getForObject("http://user-service/user/" + uid, User.class);
         //获取每一本书的详细信息
         List<Book> bookList = borrowList
                 .stream()
-                .map(borrow -> restTemplate.getForObject("http://localhost:8201/book/" + borrow.getBid(), Book.class))
+                .map(borrow -> restTemplate.getForObject("http://book-service/book/" + borrow.getBid(), Book.class))
                 .collect(Collectors.toList());
         return new BorrowDetail(user, bookList);
     }
