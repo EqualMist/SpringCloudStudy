@@ -1,5 +1,7 @@
 package com.zzy.service.impl;
 
+import com.zzy.client.BookClient;
+import com.zzy.client.UserClient;
 import com.zzy.entity.Book;
 import com.zzy.entity.Borrow;
 import com.zzy.entity.BorrowDetail;
@@ -20,18 +22,20 @@ public class BorrowServiceImpl implements BorrowService {
     BorrowMapper mapper;
 
     @Resource
-    RestTemplate restTemplate;
+    BookClient bookClient;
+    @Resource
+    UserClient userClient;
 
     @Override
     public BorrowDetail getUserBorrowDetailByUid(int uid) {
         List<Borrow> borrowList = mapper.getBorrowsByUid(uid);
         //那么问题来了，现在拿到借阅关联信息了，怎么调用其他服务获取信息呢？
         //RestTemplate支持多种方式的远程调用
-        User user = restTemplate.getForObject("http://user-service/user/" + uid, User.class);
+        User user = userClient.findUserById(uid);
         //获取每一本书的详细信息
         List<Book> bookList = borrowList
                 .stream()
-                .map(borrow -> restTemplate.getForObject("http://book-service/book/" + borrow.getBid(), Book.class))
+                .map(borrow -> bookClient.findBookById(borrow.getBid()))
                 .collect(Collectors.toList());
         return new BorrowDetail(user, bookList);
     }
