@@ -7,3 +7,10 @@ spring:
     url: jdbc:mysql://10.2.14.249:33406/zdb_cloud?
     username: root
     password: root@!^*
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      discovery:
+        # 配置Nacos注册中心地址
+        server-addr: localhost:8848
