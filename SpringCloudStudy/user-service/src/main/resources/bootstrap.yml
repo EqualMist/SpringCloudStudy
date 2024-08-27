@@ -14,6 +14,10 @@ spring:
         namespace: f888c235-c983-4181-8fc9-99a361212a51
         file-extension: yml
         server-addr: localhost:8848
+    sentinel:
+      transport:
+        # 添加监控页面地址即可
+        dashboard: localhost:8858
 
 
 
