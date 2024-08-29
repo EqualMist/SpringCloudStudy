@@ -4,6 +4,7 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSONObject;
 import com.zzy.entity.BorrowDetail;
+import com.zzy.entity.User;
 import com.zzy.service.BorrowService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Collections;
 
 @RestController
 public class BorrowController {
@@ -26,9 +28,14 @@ public class BorrowController {
     }
 
     @RequestMapping("/borrow2/{uid}")
-    BorrowDetail findUserBorrows2(@PathVariable("uid") int uid){
-        BorrowDetail borrowDetail =service.getUserBorrowDetailByUid(uid);
-        return borrowDetail;
+    @SentinelResource(value = "findUserBorrows2", blockHandler = "test2")
+    BorrowDetail findUserBorrows2(@PathVariable("uid") int uid) throws InterruptedException {
+       throw new RuntimeException();
+    }
+
+    BorrowDetail test2(int uid, BlockException e){
+        System.out.println(e.getClass());
+        return new BorrowDetail(new User(), Collections.emptyList());
     }
 
     @RequestMapping("/blocked")
@@ -46,7 +53,7 @@ public class BorrowController {
             blockHandler = "blockMethod",
             exceptionsToIgnore = IOException.class)  //忽略那些异常，也就是说这些异常出现时不使用替代方案
     String test(){
-        return"HelloWorld！";
+        return "HelloWorld！";
     }
 
     //替代方法必须和原方法返回值和参数一致，最后可以添加一个Throwable作为参数接受异常
