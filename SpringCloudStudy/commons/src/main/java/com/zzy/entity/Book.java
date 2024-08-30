@@ -9,4 +9,5 @@ public class Book {
     int bid;
     String title;
     String description;
+    int count;
 }

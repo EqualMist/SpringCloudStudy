@@ -9,4 +9,5 @@ public class User {
     int uid;
     String name;
     String sex;
+    int bookCount;
 }

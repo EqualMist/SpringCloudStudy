@@ -10,4 +10,11 @@ public interface BookClient {
 
     @RequestMapping("/book/{bid}")
     Book findBookById(@PathVariable("bid") int bid);
+
+    @RequestMapping("/book/remain/{bid}")
+    Integer bookRemain(@PathVariable("bid") int bid);
+
+    @RequestMapping("/book/borrow/{bid}")
+    boolean bookBorrow(@PathVariable("bid") int bid);
+
 }
