@@ -2,6 +2,7 @@ package com.zzy.controller;
 
 import com.zzy.entity.User;
 import com.zzy.service.UserService;
+import io.seata.core.context.RootContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class UserController {
 
     @RequestMapping("/user/remain/{uid}")
     public Integer userRemain(@PathVariable("uid") int uid){
+        System.out.println("userRemain XID: " + RootContext.getXID());
         return service.getRemain(uid);
     }
 

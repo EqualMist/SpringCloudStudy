@@ -2,6 +2,7 @@ package com.zzy.controller;
 
 import com.zzy.entity.Book;
 import com.zzy.service.BookService;
+import io.seata.core.context.RootContext;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,7 @@ public class BookController {
 
     @RequestMapping("/book/borrow/{bid}")
     public boolean bookBorrow(@PathVariable("bid") int bid){
+        System.out.println("bookBorrow XID: " + RootContext.getXID());
         int remain = service.getRemain(bid);
         return service.setRemain(bid, remain - 1);
     }
