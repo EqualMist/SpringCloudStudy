@@ -2,8 +2,24 @@ server:
   port: 8201
 
 spring:
+  application:
+    name: book-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://10.2.14.249:33406/zdb_cloud?
     username: root
     password: root@!^*
+
+security:
+  oauth2:
+    client:
+      #不多说了
+      client-id: web
+      client-secret: 654321
+#      #Token获取地址
+#      access-token-uri: http://localhost:8500/sso/oauth/token
+#      #验证页面地址
+#      user-authorization-uri: http://localhost:8500/sso/oauth/authorize
+    resource:
+      #Token信息获取和校验地址
+      token-info-uri: http://localhost:8500/sso/oauth/check_token
